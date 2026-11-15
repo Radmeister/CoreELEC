@@ -63,6 +63,52 @@ do not apply the older September kernel installer after updating.
 5. Play the same affected DV file repeatedly through Plex, then another file,
    checking the same dark scene. Confirm the intended HDR10 output is retained.
 
+### Copying the update from Windows
+
+Download the community `.tar` and its matching `.tar.sha256` from the test
+release. In PowerShell, check the download:
+
+```powershell
+Get-FileHash -Algorithm SHA256 .\CoreELEC-Amlogic-no.aarch64-22.0-Piers-samurihl_20261030200017-cube-vadj1-test1.tar
+Get-Content .\CoreELEC-Amlogic-no.aarch64-22.0-Piers-samurihl_20261030200017-cube-vadj1-test1.tar.sha256
+```
+
+The hash must match. Enable SSH in CoreELEC if necessary, then replace
+`CUBE_IP` below with the test Cube's IP address:
+
+```powershell
+scp .\CoreELEC-Amlogic-no.aarch64-22.0-Piers-samurihl_20261030200017-cube-vadj1-test1.tar root@CUBE_IP:/storage/.update/
+```
+
+Windows OpenSSH supplies `scp`; WinSCP can also copy the same archive to
+`/storage/.update/`. Leave only the intended update archive in that directory.
+Once the copy finishes, reboot from CoreELEC's power menu. Use the Cube's SSH
+password when prompted; it is not supplied by this project.
+
+### Copying the update from macOS or Linux
+
+Check `shasum -a 256 <archive.tar>` against the supplied checksum file, then use
+`scp <archive.tar> root@CUBE_IP:/storage/.update/` and reboot from CoreELEC.
+
+The correction survives a reboot. Installing a later stock build can replace
+the corrected kernel; use a package compiled for that release or a maintainer
+build that includes the source correction.
+
+## Package verification tools
+
+`tools/cube-vadj1/verify-module-abi.py` reads the official modules' ARM64 ELF
+version records. It compares every imported symbol CRC with the rebuilt
+exports or a retained stock module provider, checks vermagic, and optionally
+requires baseline and corrected export sets to match exactly. These are
+compatibility checks; a passing report does not prove runtime correctness.
+
+`tools/cube-vadj1/package-update.py` accepts only the pinned official October
+archive. It preserves the Android boot header and exact initramfs, replacing
+the compressed kernel and updating its boot ID. It then replaces only
+`target/KERNEL` and `target/KERNEL.md5` in the update archive and verifies the
+contents and metadata of every archive entry. The published verification
+report and SHA-256 identify the resulting test download.
+
 Keep Kodi add-on updates on notification-only mode if using the workaround for
 the separately observed startup/update deadlock. That issue is independent of
 this kernel correction.
