@@ -96,6 +96,9 @@ build that includes the source correction.
 
 ## Package verification tools
 
+[Build/source-bundle instructions](tools/cube-vadj1/README.md) describe the
+pinned inputs, compiler and standalone reproduction process.
+
 `tools/cube-vadj1/verify-module-abi.py` reads the official modules' ARM64 ELF
 version records. It compares every imported symbol CRC with the rebuilt
 exports or a retained stock module provider, checks vermagic, and optionally
