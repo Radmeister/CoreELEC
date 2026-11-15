@@ -26,7 +26,7 @@ and fourth Plex plays.
 ## Repeated-play results
 
 The driver readback used its existing register-read command for
-`VPP_VADJ1_MISC` (`0x3280`). No register write or runtime bypass override was
+`VPP_VADJ1_MISC` (`0x3280`). No manual register write or runtime bypass override was
 used. Each play was paused near five seconds on the title card.
 
 | Playback start | VADJ1 readback | Enable bit | DV processing | Reported output | Correction counter | TV confirmation |
