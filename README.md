@@ -1,3 +1,11 @@
+# Fire TV Cube 3 — VADJ1 correction test build
+
+This community branch is based on SamuriHL release **v22.0-samurihl-20261030200017** with the targeted T7 Dolby Vision raised-black correction added. See **[CUBE-VADJ1.md](CUBE-VADJ1.md)** for scope, source changes, build provenance, verification, and update instructions. This is a community test build; the new update package requires hardware validation.
+
+[Investigation and original measured evidence](https://github.com/Radmeister/coreelec-cube-dv-fix/blob/main/TECHNICAL.md).
+
+---
+
 # CoreELEC
 
 CoreELEC is a 'Just enough OS' Linux distribution for running the award-winning [Kodi](https://kodi.tv) software on popular low-cost hardware. CoreELEC is a minor fork of [LibreELEC](https://libreelec.tv), it's built by the community for the community. [CoreELEC website](http://coreelec.org).

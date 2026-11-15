@@ -141,3 +141,8 @@ drivers/media/enhancement/amdolby_vision/amdv.c:		if (vinfo->vout_device && vinf
 
 # --- 0022: colour attr chosen on RESERVED6 under any HDR policy ---
 drivers/drm/meson_hdmi.c:(get_amdv_policy() == AMDV_FORCE_OUTPUT_MODE) ||:1
+
+# T7 VPP0 STB-DV bypass: reconcile live VADJ1 enable with cached state.
+drivers/media/enhancement/amvecm/amve.c:static bool pq_vadj1_sync = true;:1
+drivers/media/enhancement/amvecm/amve.c:static bool t7_dv_vadj1_needs_sync(u8 requested_enable, int vpp_index):1
+drivers/media/enhancement/amvecm/amve.c:t7_dv_vadj1_needs_sync(pq_cfg.vadj1_en, vpp_index)):2
