@@ -1,6 +1,10 @@
 # Fire TV Cube 3 — VADJ1 correction test build
 
-This community branch is based on SamuriHL release **v22.0-samurihl-20261030200017** with the targeted T7 Dolby Vision raised-black correction added. See **[CUBE-VADJ1.md](CUBE-VADJ1.md)** for scope, source changes, build provenance, verification, and update instructions. This is a community test build; the new update package requires hardware validation.
+This community branch is based on SamuriHL release **v22.0-samurihl-20261030200017** with the targeted T7 Dolby Vision raised-black correction added. **Successfully installed and tested on a Fire TV Cube 3 on 15 November 2026:** four Plex playback starts retained the correct VADJ1 hardware state with DV processing and HDR10 output; the owner confirmed normal blacks on the first and fourth plays.
+
+**[Download the tested update](https://github.com/Radmeister/CoreELEC/releases/tag/cube-vadj1-20261030-test1)** · **[Windows/macOS/Linux update guide](CUBE-VADJ1.md)** · **[Hardware test results and scope](CUBE-VADJ1-TEST-RESULTS.md)**
+
+This remains an independent community prerelease. The targeted test covers the Cube's DV-to-HDR10 path; it does not establish compatibility with other devices or constitute a full format/audio/CEC regression suite.
 
 [Investigation and original measured evidence](https://github.com/Radmeister/coreelec-cube-dv-fix/blob/main/TECHNICAL.md).
 

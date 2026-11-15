@@ -1,4 +1,4 @@
-# Fire TV Cube 3: VADJ1 correction test branch
+# Fire TV Cube 3: VADJ1 correction and update guide
 
 This community branch adds the measured raised-black correction to SamuriHL's
 **v22.0-samurihl-20261030200017** release, commit
@@ -9,6 +9,22 @@ The correction detects T7 VPP0 hardware still enabling VADJ1 while STB Dolby
 Vision bypass requests it off, and reuses the existing direct/RDMA disable path.
 It preserves the other register bits, Dolby-generated settings, and the intended
 DV-to-HDR10 processing path.
+
+## Tested successfully on 15 November 2026
+
+The published October update was installed on a **Fire TV Cube 3 (T7/gazelle)**
+using CoreELEC's normal update mechanism and booted successfully. The installed
+kernel and SYSTEM matched the published package. The original Dolby module,
+2,150-nit test setting and notification-only add-on update preference were retained.
+The luminance setting is specific to the test setup, not a requirement for other TVs.
+
+Four starts of the same episode through Plex kept **VADJ1 at `0x2` (enable bit
+off)**, with DV processing active and HDR10 output reported throughout the
+paused checks. The owner confirmed normal TV blacks on the first and fourth
+plays. No kernel fault markers or failed services were detected.
+
+**[Download the tested update and checksums](https://github.com/Radmeister/CoreELEC/releases/tag/cube-vadj1-20261030-test1)**.
+See the [full test table, exact package hashes and scope](CUBE-VADJ1-TEST-RESULTS.md).
 
 ## Source change
 
@@ -21,8 +37,9 @@ projects/Amlogic-ce/packages/linux-drivers/amlogic/common_drivers/patches/0023-a
 Matching assertions check the helper and both write-path call sites. No other
 picture-processing source change is introduced. The resulting `amve.c` is
 byte-identical to the correction previously validated on two Cubes using the
-September release. The October kernel still requires its own compatibility and
-hardware validation; prior tests do not establish that this new build works.
+September release. This October kernel has now passed its own build,
+shipped-module compatibility, installation and repeated-playback checks described
+above; its validation is distinct from the earlier September tests.
 
 [Detailed findings, original captures, raw readings and maintainer checklist](https://github.com/Radmeister/coreelec-cube-dv-fix/blob/main/TECHNICAL.md).
 
@@ -46,9 +63,10 @@ archive. Build/packaging verification results accompany the release.
 
 ## Testing the update
 
-Use the community `.tar` attached to this fork's test release only after its
-build verification is complete. It is intended for **Fire TV Cube 3** testing;
-do not apply the older September kernel installer after updating.
+Use the community `.tar` attached to the tested release linked above. It is
+intended for **Fire TV Cube 3**; do not apply the older September kernel
+installer after updating. The release remains a community prerelease with
+targeted validation on the DV-to-HDR10 path.
 
 1. Keep a full backup and a known-working recovery/update archive.
 2. Copy the verified community update `.tar` into `/storage/.update/`.
@@ -80,8 +98,10 @@ The hash must match. Enable SSH in CoreELEC if necessary, then replace
 scp .\CoreELEC-Amlogic-no.aarch64-22.0-Piers-samurihl_20261030200017-cube-vadj1-test1.tar root@CUBE_IP:/storage/.update/
 ```
 
-Windows OpenSSH supplies `scp`; WinSCP can also copy the same archive to
-`/storage/.update/`. Leave only the intended update archive in that directory.
+Windows OpenSSH supplies `scp`; WinSCP in SCP mode can also copy the same archive
+to `/storage/.update/`. If a modern `scp` reports an unavailable SFTP subsystem,
+retry with `scp -O` to use the legacy SCP protocol used during our installation.
+Leave only the intended update archive in that directory.
 Once the copy finishes, reboot from CoreELEC's power menu. Use the Cube's SSH
 password when prompted; it is not supplied by this project.
 
@@ -89,6 +109,7 @@ password when prompted; it is not supplied by this project.
 
 Check `shasum -a 256 <archive.tar>` against the supplied checksum file, then use
 `scp <archive.tar> root@CUBE_IP:/storage/.update/` and reboot from CoreELEC.
+If SFTP is unavailable, use `scp -O <archive.tar> root@CUBE_IP:/storage/.update/`.
 
 The correction survives a reboot. Installing a later stock build can replace
 the corrected kernel; use a package compiled for that release or a maintainer
@@ -111,6 +132,11 @@ the compressed kernel and updating its boot ID. It then replaces only
 `target/KERNEL` and `target/KERNEL.md5` in the update archive and verifies the
 contents and metadata of every archive entry. The published verification
 report and SHA-256 identify the resulting test download.
+
+The original release assets and their checksums are unchanged. Their build-time
+reports and source bundle retain the pre-test status recorded when they were
+created. The dated hardware test report documents the subsequent successful
+installation and playback checks.
 
 Keep Kodi add-on updates on notification-only mode if using the workaround for
 the separately observed startup/update deadlock. That issue is independent of
